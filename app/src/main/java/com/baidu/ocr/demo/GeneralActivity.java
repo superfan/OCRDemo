@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -66,12 +67,15 @@ public class GeneralActivity extends AppCompatActivity {
         findViewById(R.id.camera_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                File file = new File(Environment.getExternalStorageDirectory(), "sh3h/pic.jpg");
                 Intent intent = new Intent(GeneralActivity.this, CameraActivity.class);
                 intent.putExtra(CameraActivity.KEY_OUTPUT_FILE_PATH,
-                        FileUtil.getSaveFile(getApplication()).getAbsolutePath());
+                        /*FileUtil.getSaveFile(getApplication()).getAbsolutePath()*/
+                        file.getPath());
                 intent.putExtra(CameraActivity.KEY_CONTENT_TYPE,
                         CameraActivity.CONTENT_TYPE_GENERAL);
+                intent.putExtra(CameraActivity.KEY_WATER_MARK,
+                        "2015-05-19\n地址：上海市杨浦区控江路1555号\n上海三高计算机");
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
             }
         });

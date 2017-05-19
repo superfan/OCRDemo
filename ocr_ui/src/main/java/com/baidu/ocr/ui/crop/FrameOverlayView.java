@@ -104,8 +104,8 @@ public class FrameOverlayView extends View {
     }
 
     private void resetFrameRect(int w, int h) {
-        frameRect.left = (int) (w * 0.2);
-        frameRect.top = (int) (h * 0.2);
+        frameRect.left = 50; //(int) (w * 0.2);
+        frameRect.top = 50; //(int) (h * 0.2);
         frameRect.right = w - frameRect.left;
         frameRect.bottom = h - frameRect.top;
     }

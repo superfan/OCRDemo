@@ -6,10 +6,12 @@ package com.baidu.ocr.ui.camera;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.baidu.ocr.ui.R;
 import com.baidu.ocr.ui.crop.CropView;
 import com.baidu.ocr.ui.crop.FrameOverlayView;
+import com.baidu.ocr.ui.util.ImageUtil;
 
 import android.Manifest;
 import android.app.Activity;
@@ -18,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -27,6 +30,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.Surface;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,6 +40,7 @@ public class CameraActivity extends Activity {
 
     public static final String KEY_OUTPUT_FILE_PATH = "outputFilePath";
     public static final String KEY_CONTENT_TYPE = "contentType";
+    public static final String KEY_WATER_MARK = "waterMark";
 
     public static final String CONTENT_TYPE_GENERAL = "general";
     public static final String CONTENT_TYPE_ID_CARD_FRONT = "IDCardFront";
@@ -68,6 +73,8 @@ public class CameraActivity extends Activity {
             return false;
         }
     };
+
+    private String waterMark = null; //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +153,8 @@ public class CameraActivity extends Activity {
         }
         cameraView.setMaskType(maskType);
         cropMaskView.setMaskType(maskType);
+
+        waterMark = getIntent().getStringExtra(KEY_WATER_MARK);
     }
 
     private void showTakePicture() {
@@ -266,7 +275,8 @@ public class CameraActivity extends Activity {
                     break;
             }
             Bitmap cropped = cropView.crop(rect);
-            displayImageView.setImageBitmap(cropped);
+            Bitmap waterMark = addWaterMark(cropped);
+            displayImageView.setImageBitmap(waterMark != null ? waterMark : cropped);
             showResultConfirm();
         }
     };
@@ -396,5 +406,25 @@ public class CameraActivity extends Activity {
             default:
                 break;
         }
+    }
+
+    private Bitmap addWaterMark(Bitmap bitmap) {
+        if (TextUtils.isEmpty(waterMark)) {
+            return bitmap;
+        }
+
+        String[] strArray = null;
+        try {
+            strArray = waterMark.split("\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (strArray == null) {
+            strArray = new String[1];
+            strArray[0] = waterMark;
+        }
+
+        return ImageUtil.drawTextArrayToLeftTop(this, bitmap, strArray, 12, Color.RED, 0, 0);
     }
 }
