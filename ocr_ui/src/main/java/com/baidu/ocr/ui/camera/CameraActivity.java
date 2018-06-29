@@ -275,8 +275,8 @@ public class CameraActivity extends Activity {
                     break;
             }
             Bitmap cropped = cropView.crop(rect);
-            Bitmap waterMark = addWaterMark(cropped);
-            displayImageView.setImageBitmap(waterMark != null ? waterMark : cropped);
+            //Bitmap waterMark = addWaterMark(cropped);
+            displayImageView.setImageBitmap(cropped); //waterMark != null ? waterMark : cropped
             showResultConfirm();
         }
     };

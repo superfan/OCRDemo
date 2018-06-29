@@ -129,6 +129,7 @@ public class CameraView extends FrameLayout {
                 break;
             case MaskView.MASK_TYPE_BANK_CARD:
                 hintResourceId = R.drawable.bd_ocr_hint_align_bank_card;
+                hintView.setVisibility(INVISIBLE);
                 break;
             case MaskView.MASK_TYPE_NONE:
             default:

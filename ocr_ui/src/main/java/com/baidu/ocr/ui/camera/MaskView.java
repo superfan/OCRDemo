@@ -118,8 +118,8 @@ public class MaskView extends View {
         if (w > 0 && h > 0) {
             float ratio = h > w ? 0.9f : 0.72f;
 
-            int width = (int) (w * ratio);
-            int height = width * 400 / 620;
+            int width = 500;//(int) (w * ratio);
+            int height = 200;//width * 400 / 620;
 
             int left = (w - width) / 2;
             int top = (h - height) / 2;
